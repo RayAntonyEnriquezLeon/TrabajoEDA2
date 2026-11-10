@@ -1,0 +1,9 @@
+#include "logistica/TablaHash.hpp"
+#include "logistica/MinHeap.hpp"
+#include "logistica/Consola.hpp"
+
+int main() {
+    logistica::TablaHash hash;
+    logistica::MinHeap heap;
+    return logistica::ejecutarConsola(hash, heap);
+}

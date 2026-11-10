@@ -1,0 +1,22 @@
+#pragma once
+
+#include "logistica/ContratosIndices.hpp"
+
+namespace logistica {
+class TablaHash final : public IIndicePedidos {
+public:
+    TablaHash();
+    ~TablaHash() override;
+    TablaHash(const TablaHash&) = delete;
+    TablaHash& operator=(const TablaHash&) = delete;
+
+    bool insertar(Pedido* pedido) override;
+    Pedido* buscar(const std::string& idPedido) const noexcept override;
+    bool eliminar(const std::string& idPedido) noexcept override;
+    std::size_t cantidad() const noexcept override;
+    void vaciar() noexcept override;
+
+private:
+    // Agreguen aqui las implementacion y algoritmos que escogieron
+};
+}
