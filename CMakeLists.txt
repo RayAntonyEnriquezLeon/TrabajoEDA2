@@ -12,6 +12,7 @@ add_library(logistica
     src/SistemaLogistico.cpp
     src/ArchivoCSV.cpp
     src/Consola.cpp
+    src/MinHeap.cpp
 )
 target_include_directories(logistica PUBLIC include)
 add_executable(menu_avl src/menu_avl.cpp)
@@ -27,6 +28,11 @@ if(BUILD_TESTING)
     add_executable(pruebas_avl tests/pruebas_avl.cpp)
     target_link_libraries(pruebas_avl PRIVATE logistica)
     add_test(NAME pruebas_avl COMMAND pruebas_avl)
+
+    add_executable(pruebas_heap tests/pruebas_heap.cpp)
+    target_link_libraries(pruebas_heap PRIVATE logistica)
+    add_test(NAME pruebas_heap COMMAND pruebas_heap)
+
     add_executable(pruebas_datos tests/pruebas_datos.cpp)
     target_link_libraries(pruebas_datos PRIVATE logistica)
     add_test(NAME pruebas_datos COMMAND pruebas_datos "${CMAKE_CURRENT_SOURCE_DIR}/datos")
@@ -39,7 +45,7 @@ if(BUILD_TESTING)
     endif()
 endif()
 
-option(LOGISTICA_CONSTRUIR_APP "Compilar el menu con el Hash y el Heap del equipo" OFF)
+option(LOGISTICA_CONSTRUIR_APP "Compilar el menu con el Hash y el Heap del equipo" ON)
 if(LOGISTICA_CONSTRUIR_APP)
     foreach(archivo include/logistica/TablaHash.hpp include/logistica/MinHeap.hpp src/TablaHash.cpp src/MinHeap.cpp)
         if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${archivo}")
@@ -47,6 +53,6 @@ if(LOGISTICA_CONSTRUIR_APP)
         endif()
     endforeach()
     configure_file(integracion/main.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/main.cpp" COPYONLY)
-    add_executable(sistema_logistico "${CMAKE_CURRENT_BINARY_DIR}/main.cpp" src/TablaHash.cpp src/MinHeap.cpp)
+    add_executable(sistema_logistico "${CMAKE_CURRENT_BINARY_DIR}/main.cpp" src/TablaHash.cpp)
     target_link_libraries(sistema_logistico PRIVATE logistica)
 endif()
