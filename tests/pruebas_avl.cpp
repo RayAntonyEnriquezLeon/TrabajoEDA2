@@ -1,4 +1,4 @@
-// solo es para verificar sin sus implemetnacion tocaron algo de otras funcionalidad , lo borramos al final ya que es irrelevante
+// Pruebas de balance, orden y rangos del AVL.
 
 
 #include "logistica/ArbolAVL.hpp"

@@ -1,4 +1,4 @@
-// solo es para verificar sin sus implemetnacion tocaron algo de otras funcionalidad , lo borramos al final ya que es irrelevante
+// Validacion de los CSV y contraste de rangos con sumas independientes.
 
 
 #include "logistica/ArchivoCSV.hpp"

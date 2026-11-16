@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [switch]$ConIndicesEquipo,
+    [switch]$ConIndicesEquipo = $true,
     [switch]$MenuAVL,
     [string]$Python = ''
 )

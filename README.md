@@ -1,128 +1,62 @@
-# Proyecto EDA II
+# Sistema de gestión logística — EDA II
 
-Para ver como se conectan las partes del equipo esta [INTEGRACION.md](INTEGRACION.md), aca queda como ejecutar y comprobar lo que ya tenemos
+Universidad de Lima · Ingeniería de Sistemas · Estructura de Datos y Algoritmos.
 
-## Que ya esta hecho
+**Integrantes:** Brigitte Arvorco, Ray Antony y Emilio (completar nombres).
 
-- AVL con insercion, eliminacion y rotaciones para mantener el balance
-- Orden por fecha, hora e ID, primeros 30 pedidos y consultas por rango con cantidad y monto
-- Registro unico de los objetos `Pedido` y coordinacion en `SistemaLogistico`
-- Lector CSV, generador con semilla y archivos de 30 y 10000 pedidos
-- Menu manual del AVL que ya pueden usar
-- Menu del sistema completo preparado para recibir Hash y Heap
-- Pruebas del AVL, lectura de datos y reproducibilidad del generador
+Sistema en C++17 con Tabla Hash, Min-Heap y AVL propios. Permite cargar pedidos desde CSV, registrar, buscar, despachar, consultar por fechas, actualizar estados, cancelar y obtener estadísticas.
 
-Todavia faltan las implementaciones reales de Hash y Heap, la coordinacion ya esta escrita pero falta validarla con esas partes
+## Requisitos
 
-## Que se necesita
+- Compilador C++17 y CMake 3.16 o posterior.
+- Python 3.9 o posterior para generar datos y ejecutar la prueba del generador.
+- Windows: Visual Studio/Build Tools con Desarrollo de escritorio con C++.
+- macOS: herramientas de línea de comandos de Xcode.
 
-Para seguir estos pasos en Windows usen PowerShell y tengan instalado
+## Compilar y probar
 
-- Visual Studio o Build Tools con la carga de trabajo de desarrollo de escritorio con C++ y las herramientas CMake o cambien la compilacion a la que consideren conveniente pero tengan como referencia el cmake
-- Tambien sirve CMake en el PATH junto con un compilador que soporte C++17
-- Python 3.9 o posterior para generar CSV y comprobar la semilla, no necesita instalar paquetes y debe tener la misma csv para todos
+Desde la carpeta que contiene `CMakeLists.txt`:
 
-igual se necesita el compilador y CMake
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DLOGISTICA_CONSTRUIR_APP=ON
+cmake --build build --config Release --parallel
+ctest --test-dir build -C Release --output-on-failure
+```
 
-Todos los comandos de abajo se ejecutan desde la carpeta raiz del proyecto, donde esta `CMakeLists.txt`
+Se ejecutan **6 pruebas**: AVL, Heap, Hash, integración, datos y generador. Si solo aparecen 5, indicar `-DPython3_EXECUTABLE=/ruta/a/python3` al configurar CMake.
 
-## Abrir el menu del AVL
+En Windows también puede usarse `.\herramientas\verificar.ps1 -ConIndicesEquipo`; ese script compila y prueba en **Debug**, no en Release.
+
+## Ejecutar
+
+```sh
+# macOS/Linux
+./build/sistema_logistico
+```
 
 ```powershell
-.\herramientas\verificar.ps1 -MenuAVL
+# Windows con Visual Studio
+.\build\Release\sistema_logistico.exe
 ```
 
-Compila y abre el menu no ejecuta las pruebas automaticas aunque tambien compile sus archivos
+Elegir `1` y cargar uno de estos archivos:
 
-Si ya compilaste y no cambiaste el codigo puedes abrirlo directamente
+- `datos/pedidos_pequeno.csv`: 30 pedidos para revisión manual.
+- `datos/pedidos_masivo.csv`: 10000 pedidos para pruebas de volumen.
 
-```powershell
-.\build\Debug\menu_avl.exe
-```
+Usar una sesión nueva para probar cada archivo por separado. Cargar el mismo archivo dos veces debe rechazar los IDs repetidos. La sesión no se guarda al salir ni modifica los CSV.
 
-Esa ruta corresponde a Visual Studio, con otros generadores el ejecutable puede quedar en `build/menu_avl.exe`
+El menú permite despachar lotes de 10 o 100, mostrar los primeros 30 pedidos y consultar rangos. Para auditoría pueden usarse `2026-06-01` a `2026-06-07`, el mes completo de junio y un rango vacío de 2027.
 
-## Que probar en el menu
+## Organización y entrega
 
-1. Elegir `1` y despues Enter sin escribir una ruta para cargar los 30 pedidos de `datos/pedidos_pequeno.csv`
-2. Elegir `3` para verlos ordenados por fecha y hora
-3. Elegir `4` y poner `2026-06-01` y `2026-06-30`, debe mostrar cantidad y monto del mes
-4. Repetir con `2026-06-01` hasta `2026-06-07` para una semana y con fechas de 2027 para obtener cero resultados
-5. Elegir `6` para ver la cantidad y comprobar que diga `AVL valido: si`
-6. Elegir `5` e ingresar fecha `2026-06-01`, hora `00:00:00` e ID `PD-000001` para eliminar uno de los pedidos generados
-7. Volver a `6`, deberian quedar 29 y el AVL seguir valido
+- `include/logistica/` y `src/`: estructuras y sistema.
+- `tests/`: pruebas automáticas; sus colecciones auxiliares solo sirven como referencia.
+- `datos/`: CSV utilizados.
+- `herramientas/`: generador reproducible y verificación en Windows.
+- [INTEGRACION.md](INTEGRACION.md): diseño y manejo de memoria.
+- `doc/`: documentación; el PDF del enunciado no reemplaza el informe final.
 
-La opcion `2` permite agregar un pedido como una fila completa, por ejemplo
+**Pendiente:** informe IEEE, diagrama, evidencias y mediciones repetidas en Release. El formato de ID admite hasta `PD-999999` y el generador hasta 20000 pedidos por archivo; no se ha validado el sistema con millones.
 
-```text
-PD-020001,00123456,Express,10,45.50,2026-06-10,12:00:00,Pendiente
-```
-
-Para probar volumen, usar `7` para vaciar la sesion y luego `1` con la ruta `datos/pedidos_masivo.csv`
-
-Este menu no modifica los CSV ni guarda cambios al salir, tampoco tiene Hash o Heap simulados, rechaza claves iguales de fecha/hora/ID pero la unicidad del ID entre fechas distintas se comprobara con el Hash real, implementamos todo lo demas en conjunto con lo que avanza ya
-
-## Generar los CSV
-
-El generador requiere Python 3.9 o posterior y no usa dependencias externas(ramdon)
-
-```powershell
-python herramientas/generar_csv.py --semilla 652 --cantidad 10000
-python herramientas/generar_csv.py --semilla 652 --cantidad 20000
-```
-
-Elijan uno de los comandos segun la cantidad que quieran, cada ejecucion reemplaza el CSV masivo y tambien genera el pequeño de 30 pedidos
-
-Misma semilla y misma version del generador dan los mismos bytes, al ampliar a 20000 se conservan las primeras 10000 filas, no depende de la fecha de ejecucion
-
-
-
-## Validar con las pruebas automaticas
-
-Esto es aparte del menu manual
-
-```powershell
-.\herramientas\verificar.ps1
-```
-
-Se compila y CTest ejecuta las pruebas disponibles
-
-| Prueba | Que revisa |
-| --- | --- |
-| `pruebas_avl` | Rotaciones, inserciones y eliminaciones con 20000 pedidos, orden y rangos |
-| `pruebas_datos` | Los dos CSV entregados, campos validos y sumas de semana, mes y rango vacio usando el AVL |
-| `generador_reproducible` | Misma semilla, mismos bytes y conservacion del prefijo al ampliar los datos |
-
-Debe aparecer `100% tests passsed`, revisen tambien que esten las tres pruebas porque la de Python se omite con un aviso si CMake no encuentra un interprete compatible
-
-Pueden indicarlo manualmente cambiando esta ruta por la de su Python
-
-```powershell
-.\herramientas\verificar.ps1 -Python 'C:\ruta\python.exe'
-```
-
-En la computadora donde se preparo el proyecto tambien se puede usar el Python incluido con Codex
-
-```powershell
-$python = "$env:USERPROFILE\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
-.\herramientas\verificar.ps1 -Python $python
-```
-
-## Cuando esten el Hash y el Heap
-
-Primero agreguen los archivos que indica `INTEGRACION.md`, despues ejecuten o solo subalo al repo y ya yo lo hago
-
-```powershell
-.\herramientas\verificar.ps1 -ConIndicesEquipo
-.\build\Debug\sistema_logistico.exe
-```
-
-El menu completo tendra carga CSV, registro, busqueda por ID, despacho, orden cronologico, rangos, estados, cancelacion y estadisticas
-
-Las pruebas actuales no validan automaticamente esas estructuras nuevas, prueben en el menu cargar dos veces el mismo archivo, buscar IDs existentes e inventados, despachar lotes de 10 y 100, actualizar 10 pedidos y cancelar otros 10
-
-Al cancelar, el pedido debe desaparecer de Hash y AVL y tambien del Heap si estaba pendiente, revisen que cantidad, monto y pendientes coincidan
-
-El menu completo ya muestra tiempos de operaciones y carga, falta tomar las mediciones finales usando las estructuras reales y preparar el informe y la sustentacion
-
-La carpeta `build` es salida de compilacion, no hace falta compartirla ni subirla al repo, cada uno la genera en su maquina
+No incluir `build/` ni ejecutables en GitHub. La entrega final es un ZIP con informe PDF, fuentes y datos de prueba.

@@ -54,7 +54,7 @@ public:
     bool verificarAVL() const noexcept { return avl_.verificarInvariantes(); }
     void vaciar() noexcept;
 
-    // Cancelar vaciar o destruir el sistema invalida las referencias correspondientes, hay algunas cosas que aun debo modificar , pero continuen
+    // Cancelar, vaciar o destruir el sistema invalida las referencias correspondientes.
 
 private:
     IIndicePedidos& hash_;
