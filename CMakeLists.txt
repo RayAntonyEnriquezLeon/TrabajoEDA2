@@ -13,6 +13,7 @@ add_library(logistica
     src/ArchivoCSV.cpp
     src/Consola.cpp
     src/MinHeap.cpp
+    src/TablaHash.cpp
 )
 target_include_directories(logistica PUBLIC include)
 add_executable(menu_avl src/menu_avl.cpp)
@@ -32,6 +33,14 @@ if(BUILD_TESTING)
     add_executable(pruebas_heap tests/pruebas_heap.cpp)
     target_link_libraries(pruebas_heap PRIVATE logistica)
     add_test(NAME pruebas_heap COMMAND pruebas_heap)
+
+    add_executable(pruebas_hash tests/pruebas_hash.cpp)
+    target_link_libraries(pruebas_hash PRIVATE logistica)
+    add_test(NAME pruebas_hash COMMAND pruebas_hash)
+
+    add_executable(pruebas_integracion tests/pruebas_integracion.cpp)
+    target_link_libraries(pruebas_integracion PRIVATE logistica)
+    add_test(NAME pruebas_integracion COMMAND pruebas_integracion "${CMAKE_CURRENT_SOURCE_DIR}/datos/pedidos_masivo.csv")
 
     add_executable(pruebas_datos tests/pruebas_datos.cpp)
     target_link_libraries(pruebas_datos PRIVATE logistica)
@@ -53,6 +62,6 @@ if(LOGISTICA_CONSTRUIR_APP)
         endif()
     endforeach()
     configure_file(integracion/main.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/main.cpp" COPYONLY)
-    add_executable(sistema_logistico "${CMAKE_CURRENT_BINARY_DIR}/main.cpp" src/TablaHash.cpp)
+    add_executable(sistema_logistico "${CMAKE_CURRENT_BINARY_DIR}/main.cpp")
     target_link_libraries(sistema_logistico PRIVATE logistica)
 endif()

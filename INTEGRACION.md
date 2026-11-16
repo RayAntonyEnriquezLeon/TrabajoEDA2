@@ -2,6 +2,12 @@
 
 Para ejecutar el proyecto y validarlo vean [README.md](README.md)
 
+## Estado actual de Emilio-Heap
+
+Hash, Heap y AVL ya tienen implementaciones concretas en `include/logistica/` y `src/`. El ejecutable `sistema_logistico` conecta las tres estructuras. Las instrucciones de copia de plantillas siguientes se conservan como referencia del contrato inicial: **no sobrescribir las implementaciones actuales con las plantillas**.
+
+CTest incluye pruebas del Hash y del sistema integrado, ademas de las pruebas del AVL, Heap, datos y generador. Para ejecutar las seis pruebas y compilar en Release, consultar el README. El informe y las mediciones finales siguen pendientes.
+
 La idea es usar un solo `SistemaLogistico`, asi cada uno hace su estructura pero todos trabajan con los mismos pedidos
 
 ## Que hace cada uno
@@ -9,7 +15,7 @@ La idea es usar un solo `SistemaLogistico`, asi cada uno hace su estructura pero
 - `SistemaLogistico` coordina registro, despacho, estados y cancelaciones
 - `RegistroPedidos` crea y libera los pedidos
 - `TablaHash` busca por ID y evita duplicados
-- `ArbolAVL` ordena por fecha y hora y consulta rangos, esta parte ya esta hecha
+- `ArbolAVL` ordena por fecha y hora y consulta rangos
 - `MinHeap` guarda pendientes y saca primero los mas urgentes
 - El menu muestra resultados y el lector CSV manda cada fila a `registrarPedido`
 
@@ -21,7 +27,7 @@ Para Hash, copiar `integracion/TablaHash.hpp.in` a `include/logistica/TablaHash.
 
 Para Heap, copiar `integracion/MinHeap.hpp.in` a `include/logistica/MinHeap.hpp` y crear `src/MinHeap.cpp`
 
-Las plantillas ya tienen los metodos  falta agregar sus variables privadas e implementar sus algoritmos
+Las plantillas describen los metodos del contrato inicial; las variables privadas y algoritmos ya estan implementados en los archivos concretos.
 
 Mantengan los nombres `logistica::TablaHash` y `logistica::MinHeap`, ambas deben crearse vacias y sin argumentos
 
@@ -91,7 +97,7 @@ Hash y Heap deben vivir mas tiempo que el sistema y no se modifican por fuera mi
 
 Los archivos de `integracion/` son plantillas, las tres estructuras terminan al mismo nivel en `include/logistica/` y `src/`, el AVL ya esta ahi
 
-CMake ya contempla `src/TablaHash.cpp` y `src/MinHeap.cpp`, si agregan otros archivos `.cpp` incluyanlos en el destino `sistema_logistico`
+CMake compila `src/TablaHash.cpp` y `src/MinHeap.cpp` una sola vez en la biblioteca `logistica`, compartida por el menu y las pruebas. Si agregan otros archivos `.cpp` de las estructuras incluyanlos en esa biblioteca, no los dupliquen en cada ejecutable.
 
 El menu `menu_avl` es solo para probar el AVL manualmente, no es otro sistema logistico ni reemplaza sus estructuras
 
