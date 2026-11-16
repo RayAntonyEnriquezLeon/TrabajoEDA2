@@ -6,7 +6,7 @@
 
 namespace logistica {
 
-// Reglas de implementacion y conexion: INTEGRACION.md, si van a modificar aglo de aqui avisa por el grupo
+// Contratos de los indices; reglas de integracion en INTEGRACION.md.
 
 class IIndicePedidos {
 public:
