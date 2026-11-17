@@ -12,6 +12,8 @@ Las tres estructuras están implementadas y conectadas mediante `SistemaLogistic
 | `ArbolAVL` | Ordenar por `(fecha, hora, idPedido)` y consultar rangos inclusivos. |
 | `MinHeap` | Despachar por prioridad numérica mayor, fecha/hora más antiguas e ID. |
 
+Los IDs válidos tienen seis o siete dígitos tras `PD-`, hasta `PD-9999999`, sin representaciones alternativas con ceros adicionales. Para desempatar fecha y hora, el comparador compartido usa el valor numérico del ID: `PD-999999` precede a `PD-1000000`. La búsqueda del AVL aplica el mismo comparador.
+
 La Hash comienza con 1024 cubetas y crece antes de superar una carga de 0.75. El Heap usa un arreglo dinámico propio y guarda la posición de cada pedido para eliminarlo sin búsqueda lineal.
 
 ## Punteros y contratos
@@ -42,6 +44,6 @@ idPedido,dniCliente,tipoEnvio,nivelPrioridad,montoDolares,fecha,hora,estado
 
 Fechas `YYYY-MM-DD`, horas `HH:MM:SS` y montos como `45.50`. Los CSV entregados contienen pendientes; los pedidos importados como `EnTransito` o `Entregado` no ingresan al Heap. No se importan cancelados.
 
-CMake compila las estructuras en la biblioteca `logistica`, que usan el menú y las pruebas
+CMake compila las estructuras en la biblioteca `logistica`, que usan el menú y las siete pruebas de CTest (incluida la del generador si Python está disponible).
 
-`integracion/main.cpp.in` conecta el Hash y el Heap con el menú del sistema completo. 
+`integracion/main.cpp.in` conecta el Hash y el Heap con el menú del sistema completo; debe conservarse en el ZIP de entrega.
