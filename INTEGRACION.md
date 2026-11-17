@@ -42,4 +42,6 @@ idPedido,dniCliente,tipoEnvio,nivelPrioridad,montoDolares,fecha,hora,estado
 
 Fechas `YYYY-MM-DD`, horas `HH:MM:SS` y montos como `45.50`. Los CSV entregados contienen pendientes; los pedidos importados como `EnTransito` o `Entregado` no ingresan al Heap. No se importan cancelados.
 
-CMake compila las estructuras una sola vez en la biblioteca `logistica`, compartida por menús y pruebas. `integracion/main.cpp.in` conecta los índices con la consola. Los archivos `TablaHash.hpp.in` y `MinHeap.hpp.in` son plantillas históricas: no se compilan ni deben reemplazar las implementaciones actuales. `menu_avl` es una herramienta de prueba del árbol, no el sistema completo.
+CMake compila las estructuras en la biblioteca `logistica`, que usan el menú y las pruebas
+
+`integracion/main.cpp.in` conecta el Hash y el Heap con el menú del sistema completo. 

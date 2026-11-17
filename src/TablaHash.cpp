@@ -5,7 +5,7 @@
 namespace logistica {
 
 namespace {
-constexpr std::size_t kCapacidadInicial = 1024; // potencia de 2: el indice se obtiene con una mascara
+constexpr std::size_t kCapacidadInicial = 1024;
 }
 
 TablaHash::TablaHash() : cubetas_(nullptr), capacidad_(kCapacidadInicial), cantidad_(0) {
@@ -18,7 +18,6 @@ TablaHash::~TablaHash() {
     delete[] cubetas_;
 }
 
-// FNV-1a de 64 bits sobre el ID completo
 std::size_t TablaHash::dispersar(const std::string& clave) noexcept {
     std::uint64_t h = 14695981039346656037ULL;
     for (unsigned char c : clave) {
@@ -30,10 +29,9 @@ std::size_t TablaHash::dispersar(const std::string& clave) noexcept {
 
 void TablaHash::redimensionar() {
     const std::size_t nuevaCapacidad = capacidad_ * 2;
-    Nodo** nuevas = new Nodo*[nuevaCapacidad]; // unico punto que puede lanzar
+    Nodo** nuevas = new Nodo*[nuevaCapacidad];
     for (std::size_t i = 0; i < nuevaCapacidad; ++i) nuevas[i] = nullptr;
 
-    // Se reutilizan los mismos nodos: sin reservas, sin excepciones
     for (std::size_t i = 0; i < capacidad_; ++i) {
         Nodo* actual = cubetas_[i];
         while (actual) {
@@ -53,12 +51,11 @@ bool TablaHash::insertar(Pedido* pedido) {
     if (!pedido) return false;
     const std::string& id = pedido->datos().idPedido;
 
-    if (buscar(id)) return false; // ID repetido
+    if (buscar(id)) return false;
 
-    // Factor de carga maximo 0.75; si redimensionar lanza, la tabla queda intacta
     if ((cantidad_ + 1) * 4 > capacidad_ * 3) redimensionar();
 
-    Nodo* nodo = new Nodo{pedido, nullptr}; // si lanza, no se modifico nada
+    Nodo* nodo = new Nodo{pedido, nullptr};
     const std::size_t indice = dispersar(id) & (capacidad_ - 1);
     nodo->siguiente = cubetas_[indice];
     cubetas_[indice] = nodo;
@@ -69,7 +66,7 @@ bool TablaHash::insertar(Pedido* pedido) {
 Pedido* TablaHash::buscar(const std::string& idPedido) const noexcept {
     const std::size_t indice = dispersar(idPedido) & (capacidad_ - 1);
     for (Nodo* actual = cubetas_[indice]; actual; actual = actual->siguiente) {
-        if (actual->pedido->datos().idPedido == idPedido) return actual->pedido; // ID completo
+        if (actual->pedido->datos().idPedido == idPedido) return actual->pedido;
     }
     return nullptr;
 }
@@ -81,7 +78,7 @@ bool TablaHash::eliminar(const std::string& idPedido) noexcept {
         if (actual->pedido->datos().idPedido == idPedido) {
             if (anterior) anterior->siguiente = actual->siguiente;
             else cubetas_[indice] = actual->siguiente;
-            delete actual; // solo el nodo; el Pedido lo libera RegistroPedidos
+            delete actual;
             --cantidad_;
             return true;
         }

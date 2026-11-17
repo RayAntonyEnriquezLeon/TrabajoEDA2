@@ -29,7 +29,6 @@ void titulo(const char* textoTitulo) {
 bool leer(const char* mensaje, std::string& valor) {
     std::cout << mensaje;
     if (!std::getline(std::cin, valor)) return false;
-    // Solo normaliza los extremos de entradas de consola; no altera el CSV.
     const auto inicio = valor.find_first_not_of(" \t\r\n");
     if (inicio == std::string::npos) valor.clear();
     else valor = valor.substr(inicio, valor.find_last_not_of(" \t\r\n") - inicio + 1);

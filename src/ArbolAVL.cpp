@@ -124,7 +124,6 @@ void ArbolAVL::acumularRango(const Nodo* nodo, const std::string& desde,
                           const std::string& hasta, ResumenRango& resultado) noexcept {
     if (!nodo) return;
     const auto& datos = nodo->pedido->datos();
-    // >= y <= conservan pedidos que comparten fecha pero tienen otra hora o ID.
     if (datos.fecha >= desde) acumularRango(nodo->izquierdo, desde, hasta, resultado);
     if (datos.fecha >= desde && datos.fecha <= hasta) {
         ++resultado.cantidad;

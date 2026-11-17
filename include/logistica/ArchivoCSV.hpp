@@ -22,7 +22,6 @@ struct ReporteCarga {
     }
 };
 
-// Carga por fila conserva las aceptadas y registra el primer error
 
 
 

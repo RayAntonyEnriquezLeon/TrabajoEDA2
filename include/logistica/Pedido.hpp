@@ -24,7 +24,6 @@ class SistemaLogistico;
 class RegistroPedidos;
 class IColaDespacho;
 
-// RegistroPedidos posee estas instancias, los indices solo guardan sus punteros de cada uno
 class Pedido {
 public:
     Pedido(const Pedido&) = delete;
@@ -53,7 +52,6 @@ bool interpretarEstado(const std::string& valor, EstadoPedido& estado) noexcept;
 bool fechaValida(const std::string& fecha) noexcept;
 bool horaValida(const std::string& hora) noexcept;
 
-// Devuelve un mensaje vacio si los datos son validos para un registro nuevo
 std::string validarNuevoPedido(const DatosPedido& datos);
 
 int compararCronologicamente(const Pedido& a, const Pedido& b) noexcept;

@@ -61,6 +61,6 @@ Para entrada automatizada, incluir una línea vacía de pausa después de cada o
 - [INTEGRACION.md](INTEGRACION.md): diseño y manejo de memoria.
 - `doc/`: documentación; el PDF del enunciado no reemplaza el informe final.
 
-El informe IEEE se prepara por separado para la revisión del docente; debe adjuntarse en PDF a la entrega. Los tiempos recopilados son de una sesión manual, no promedios de mediciones repetidas. El formato de ID admite hasta `PD-999999` y el generador hasta 20000 pedidos por archivo; no se ha validado el sistema con millones.
+Los tiempos recopilados son de una sesión manual, no promedios de mediciones repetidas. El formato de ID admite hasta `PD-999999` y el generador hasta 20000 pedidos por archivo; no se ha validado el sistema con millones.
 
-No incluir `build/` ni ejecutables en GitHub. La entrega final es un ZIP con informe PDF, fuentes y datos de prueba.
+

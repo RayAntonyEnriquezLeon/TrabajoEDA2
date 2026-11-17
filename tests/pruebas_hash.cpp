@@ -55,7 +55,6 @@ void probarHash() {
         exigir(hash.eliminar(id) && !hash.eliminar(id), "Eliminar una sola vez.");
         exigir(!hash.buscar(id), "Busqueda tras eliminar.");
         exigir(hash.cantidad() == referencia.size() - i - 1, "Contador tras eliminar.");
-        // El indice no debe haber destruido el pedido compartido.
         exigir(pedido->datos().idPedido == id, "Conservar pedido del registro.");
         if (i + 1 < referencia.size())
             exigir(hash.buscar(referencia[i + 1]->datos().idPedido) == referencia[i + 1],

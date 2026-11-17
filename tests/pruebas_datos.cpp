@@ -1,4 +1,3 @@
-// Validacion de los CSV y contraste de rangos con sumas independientes.
 
 
 #include "logistica/ArchivoCSV.hpp"

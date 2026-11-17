@@ -5,7 +5,6 @@
 
 namespace logistica {
 
-// Almacen propietario, no es un indice de busqueda ni reemplaza al Hash
 class RegistroPedidos {
 public:
     RegistroPedidos() = default;
