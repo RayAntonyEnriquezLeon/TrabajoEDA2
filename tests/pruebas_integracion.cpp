@@ -144,7 +144,7 @@ void probarSistema(const std::string& ruta) {
     }
     comprobar(sistema, referencia);
     for (std::size_t i : {std::size_t{0}, enviados}) {
-        auto& d = referencia[i]; // En transito y entregado, respectivamente.
+        auto& d = referencia[i];
         exigir(sistema.actualizarEstado(d.idPedido, EstadoPedido::Cancelado).correcto(),
                "Cancelar mediante estado.");
         d.estado = EstadoPedido::Cancelado;

@@ -1,4 +1,3 @@
-// Pruebas de balance, orden y rangos del AVL.
 
 
 #include "logistica/ArbolAVL.hpp"

@@ -1,5 +1,3 @@
-"""Pruebas del contrato de reproducibilidad, no modifican los CSV entregados"""
-
 import csv
 import hashlib
 import io
@@ -11,7 +9,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ / "herramientas"))
-from generar_csv import CABECERA, escribir_csv, generar_filas  # noqa: E402
+from generar_csv import CABECERA, escribir_csv, generar_filas
 
 
 class PruebasGenerador(unittest.TestCase):
@@ -53,7 +51,6 @@ class PruebasGenerador(unittest.TestCase):
         self.assertEqual(filas[5][5:7], ("2026-07-01", "00:00:00"))
 
     def test_formato_y_firma_version_dos(self):
-        # Ancla v2: cambiar accidentalmente algoritmo, formato o reglas rompe esto.
         with tempfile.TemporaryDirectory() as directorio:
             for nombre, cantidad in (("pedidos_pequeno.csv", 30), ("pedidos_masivo.csv", 10000)):
                 generado = Path(directorio) / nombre
@@ -61,8 +58,6 @@ class PruebasGenerador(unittest.TestCase):
                 registros = list(csv.reader(io.StringIO(generado.read_text(encoding="utf-8"))))
                 self.assertEqual(tuple(registros[0]), CABECERA)
                 self.assertEqual(len(registros), cantidad + 1)
-            # Firmas fijas de v2; se verifican en temporales para permitir que el
-            # equipo regenere datos/ con otra semilla o con 20000 registros.
             self.assertEqual(hashlib.sha256((Path(directorio) / "pedidos_pequeno.csv").read_bytes()).hexdigest(),
                              "a521e47aac0b22b70bc2c1dce7c7f522e2489995c9f1bb09f58cd8e6b12a5fc4")
             self.assertEqual(hashlib.sha256((Path(directorio) / "pedidos_masivo.csv").read_bytes()).hexdigest(),

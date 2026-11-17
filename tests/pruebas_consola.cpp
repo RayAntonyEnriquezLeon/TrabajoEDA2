@@ -13,7 +13,6 @@ void exigir(bool condicion, const char* mensaje) {
     if (!condicion) throw std::runtime_error(mensaje);
 }
 
-// Sustituye los streams solo durante cada escenario y los restaura incluso si falla.
 class StreamsTemporales {
 public:
     StreamsTemporales(std::istream& entrada, std::ostream& salida)
@@ -105,8 +104,8 @@ void probarErroresYFinDeEntrada() {
     contiene(salida, "Estado desconocido.");
     contiene(salida, "Rango invalido:");
     ejecutar("");
-    ejecutar("2\nPD-020001\n"); // EOF durante el registro.
-    ejecutar("9\n"); // EOF en la pausa.
+    ejecutar("2\nPD-020001\n");
+    ejecutar("9\n");
     salida = ejecutar("2\nPD-020001\n00123456\nExpress\n10\n45.50\n"
                       "2026-06-05\n12: 00:00\n\n9\n\n0\n");
     contiene(salida, "No se pudo registrar:");

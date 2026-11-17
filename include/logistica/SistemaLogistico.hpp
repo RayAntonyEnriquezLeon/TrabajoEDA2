@@ -34,7 +34,6 @@ struct Estadisticas {
 
 class SistemaLogistico {
 public:
-    // Los indices deben estar vacios y sobrevivir al sistema que se presenta
     SistemaLogistico(IIndicePedidos& hash, IColaDespacho& heap);
     ~SistemaLogistico();
     SistemaLogistico(const SistemaLogistico&) = delete;
@@ -45,7 +44,6 @@ public:
     ResultadoOperacion actualizarEstado(const std::string& idPedido, EstadoPedido estado);
     ResultadoOperacion cancelarPedido(const std::string& idPedido);
 
-    // Escribe como maximo capacidad referencias; nullptr no despacha.
     std::size_t despacharLote(std::size_t solicitados, const Pedido** salida, std::size_t capacidad);
     std::size_t consultarOrdenados(const Pedido** salida, std::size_t capacidad) const noexcept;
     ResultadoOperacion consultarRango(const std::string& desde, const std::string& hasta,
@@ -54,7 +52,6 @@ public:
     bool verificarAVL() const noexcept { return avl_.verificarInvariantes(); }
     void vaciar() noexcept;
 
-    // Cancelar, vaciar o destruir el sistema invalida las referencias correspondientes.
 
 private:
     IIndicePedidos& hash_;

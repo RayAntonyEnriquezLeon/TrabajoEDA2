@@ -1,4 +1,3 @@
-//cambiar aqui lo que implementes y verifiquen funcionalidad
 
 #include "logistica/ArchivoCSV.hpp"
 #include "logistica/RegistroPedidos.hpp"
