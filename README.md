@@ -23,7 +23,7 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Se ejecutan **6 pruebas**: AVL, Heap, Hash, integración, datos y generador. Si solo aparecen 5, indicar `-DPython3_EXECUTABLE=/ruta/a/python3` al configurar CMake.
+Se ejecutan **7 pruebas**: AVL, Heap, Hash, integración, datos, consola y generador. Si solo aparecen 6, indicar `-DPython3_EXECUTABLE=/ruta/a/python3` al configurar CMake.
 
 En Windows también puede usarse `.\herramientas\verificar.ps1 -ConIndicesEquipo`; ese script compila y prueba en **Debug**, no en Release.
 
@@ -48,6 +48,10 @@ Usar una sesión nueva para probar cada archivo por separado. Cargar el mismo ar
 
 El menú permite despachar lotes de 10 o 100, mostrar los primeros 30 pedidos y consultar rangos. Para auditoría pueden usarse `2026-06-01` a `2026-06-07`, el mes completo de junio y un rango vacío de 2027.
 
+Después de cada operación, presionar **Enter para volver al menú**. Los resultados permanecen en el historial de la terminal. La búsqueda muestra campos con etiquetas; los listados usan una tabla. Se eliminan espacios accidentales al principio y al final de las entradas de consola, sin modificar espacios internos ni las validaciones del archivo CSV.
+
+Para entrada automatizada, incluir una línea vacía de pausa después de cada operación. Los tiempos siguen midiendo únicamente la operación, no la impresión ni la pausa. Los estados se introducen como `EnTransito`, `Entregado` o `Cancelado`; seleccionar `Cancelado` elimina el pedido.
+
 ## Organización y entrega
 
 - `include/logistica/` y `src/`: estructuras y sistema.
@@ -57,6 +61,6 @@ El menú permite despachar lotes de 10 o 100, mostrar los primeros 30 pedidos y 
 - [INTEGRACION.md](INTEGRACION.md): diseño y manejo de memoria.
 - `doc/`: documentación; el PDF del enunciado no reemplaza el informe final.
 
-**Pendiente:** informe IEEE, diagrama, evidencias y mediciones repetidas en Release. El formato de ID admite hasta `PD-999999` y el generador hasta 20000 pedidos por archivo; no se ha validado el sistema con millones.
+El informe IEEE se prepara por separado para la revisión del docente; debe adjuntarse en PDF a la entrega. Los tiempos recopilados son de una sesión manual, no promedios de mediciones repetidas. El formato de ID admite hasta `PD-999999` y el generador hasta 20000 pedidos por archivo; no se ha validado el sistema con millones.
 
 No incluir `build/` ni ejecutables en GitHub. La entrega final es un ZIP con informe PDF, fuentes y datos de prueba.
