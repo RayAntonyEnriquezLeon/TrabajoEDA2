@@ -52,7 +52,7 @@ Después de cada operación, presionar **Enter para volver al menú**. Los resul
 
 Para entrada automatizada, incluir una línea vacía de pausa después de cada operación. Los tiempos siguen midiendo únicamente la operación, no la impresión ni la pausa. Los estados se introducen como `EnTransito`, `Entregado` o `Cancelado`; seleccionar `Cancelado` elimina el pedido.
 
-## Organización y entrega
+## Organización del proyecto
 
 - `include/logistica/` y `src/`: estructuras y sistema.
 - `integracion/main.cpp.in`: entrada del sistema completo, necesaria para compilar.
@@ -60,7 +60,7 @@ Para entrada automatizada, incluir una línea vacía de pausa después de cada o
 - `datos/`: CSV utilizados.
 - `herramientas/`: generador reproducible y verificación en Windows.
 - [INTEGRACION.md](INTEGRACION.md): diseño y manejo de memoria.
-- `doc/`: documentación; el PDF del enunciado no reemplaza el informe final.
+- `doc/`: documentación del proyecto.
 
 ## Identificadores y pruebas de escala
 
@@ -75,9 +75,3 @@ python3 herramientas/generar_csv.py --semilla 652 --cantidad 2000000 --salida da
 En Windows puede usarse `python` en lugar de `python3`. La opción `--salida` admite de 1 a 9999999 pedidos y reemplaza únicamente el archivo indicado. El volumen que puede cargarse depende de la memoria disponible; el máximo de IDs no garantiza que cualquier equipo pueda cargar ese volumen.
 
 El informe del equipo documenta una ejecución adicional de 2000000 de pedidos en Windows. Los tiempos de esa prueba y los de la sesión de 10000 en Mac corresponden a equipos y volúmenes distintos; no son promedios de repeticiones ni una comparación directa de rendimiento.
-
-## ZIP final
-
-Incluir el informe IEEE final en PDF, `CMakeLists.txt`, `src/`, `include/`, `integracion/`, `datos/`, `tests/`, `herramientas/` y las guías. Conservar y adjuntar los archivos y evidencias de prueba utilizados, incluida la prueba de escala descrita en el informe.
-
-No incluir `build/`, ejecutables ni entornos de Python. El ZIP descargado de GitHub no incluye automáticamente el informe que se edita en Overleaf: agregar su PDF final antes de entregar.
