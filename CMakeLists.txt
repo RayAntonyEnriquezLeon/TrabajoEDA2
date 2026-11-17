@@ -45,6 +45,11 @@ if(BUILD_TESTING)
     add_executable(pruebas_datos tests/pruebas_datos.cpp)
     target_link_libraries(pruebas_datos PRIVATE logistica)
     add_test(NAME pruebas_datos COMMAND pruebas_datos "${CMAKE_CURRENT_SOURCE_DIR}/datos")
+
+    add_executable(pruebas_consola tests/pruebas_consola.cpp)
+    target_link_libraries(pruebas_consola PRIVATE logistica)
+    add_test(NAME pruebas_consola COMMAND pruebas_consola "${CMAKE_CURRENT_SOURCE_DIR}/datos")
+
     find_package(Python3 3.9 COMPONENTS Interpreter QUIET)
     if(Python3_Interpreter_FOUND)
         add_test(NAME generador_reproducible
