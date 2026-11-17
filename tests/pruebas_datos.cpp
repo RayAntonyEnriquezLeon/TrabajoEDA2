@@ -36,6 +36,8 @@ void probarValidaciones() {
            "Aceptar importacion de entregados.");
     const std::string invalidos[] = {
         "", fila + ",extra", "PD-000001,00123456",
+        "PD-0000001,00123456,Normal,1,1.00,2026-06-01,00:00:00,Pendiente",
+        "PD-10000000,00123456,Normal,1,1.00,2026-06-01,00:00:00,Pendiente",
         "PD-000001,00123456,Normal,1,0.001,2026-06-01,00:00:00,Pendiente",
         "PD-000001,00123456,Normal,1,92233720368547758.08,2026-06-01,00:00:00,Pendiente",
         "PD-000001,00123456,Normal,11,1.00,2026-06-01,00:00:00,Pendiente",

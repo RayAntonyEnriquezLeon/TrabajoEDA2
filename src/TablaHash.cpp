@@ -1,6 +1,8 @@
 #include "logistica/TablaHash.hpp"
 
 #include <cstdint>
+#include <limits>
+#include <stdexcept>
 
 namespace logistica {
 
@@ -28,6 +30,8 @@ std::size_t TablaHash::dispersar(const std::string& clave) noexcept {
 }
 
 void TablaHash::redimensionar() {
+    if (capacidad_ > std::numeric_limits<std::size_t>::max() / sizeof(Nodo*) / 2)
+        throw std::length_error("Tabla Hash demasiado grande.");
     const std::size_t nuevaCapacidad = capacidad_ * 2;
     Nodo** nuevas = new Nodo*[nuevaCapacidad];
     for (std::size_t i = 0; i < nuevaCapacidad; ++i) nuevas[i] = nullptr;
@@ -53,7 +57,7 @@ bool TablaHash::insertar(Pedido* pedido) {
 
     if (buscar(id)) return false;
 
-    if ((cantidad_ + 1) * 4 > capacidad_ * 3) redimensionar();
+    if (cantidad_ >= capacidad_ - capacidad_ / 4) redimensionar();
 
     Nodo* nodo = new Nodo{pedido, nullptr};
     const std::size_t indice = dispersar(id) & (capacidad_ - 1);

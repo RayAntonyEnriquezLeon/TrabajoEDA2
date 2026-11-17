@@ -65,8 +65,10 @@ bool horaValida(const std::string& hora) noexcept {
         numero(hora, 0, 2) <= 23 && numero(hora, 3, 2) <= 59 && numero(hora, 6, 2) <= 59;
 }
 std::string validarNuevoPedido(const DatosPedido& datos) {
-    if (datos.idPedido.size() != 9 || datos.idPedido.compare(0, 3, "PD-") != 0 ||
-        !soloDigitos(datos.idPedido, 3, 6) || datos.idPedido == "PD-000000") return "ID esperado: PD-000001 a PD-999999.";
+    const auto& id = datos.idPedido;
+    if ((id.size() != 9 && id.size() != 10) || id.compare(0, 3, "PD-") != 0 ||
+        !soloDigitos(id, 3, id.size() - 3) || id == "PD-000000" ||
+        (id.size() == 10 && id[3] == '0')) return "ID esperado: PD-000001 a PD-9999999.";
     if (datos.dniCliente.size() != 8 || !soloDigitos(datos.dniCliente, 0, 8)) return "El DNI debe contener ocho digitos.";
     if (datos.tipoEnvio != TipoEnvio::Normal && datos.tipoEnvio != TipoEnvio::Express &&
         datos.tipoEnvio != TipoEnvio::SameDay) return "Tipo de envio invalido.";
@@ -78,13 +80,17 @@ std::string validarNuevoPedido(const DatosPedido& datos) {
         datos.estado != EstadoPedido::Entregado) return "Estado inicial invalido; no se pueden registrar cancelados.";
     return {};
 }
+int compararCronologicamente(const std::string& fecha, const std::string& hora,
+                             const std::string& id, const Pedido& pedido) noexcept {
+    const auto& datos = pedido.datos();
+    if (fecha != datos.fecha) return fecha < datos.fecha ? -1 : 1;
+    if (hora != datos.hora) return hora < datos.hora ? -1 : 1;
+    if (id.size() != datos.idPedido.size()) return id.size() < datos.idPedido.size() ? -1 : 1;
+    return id.compare(datos.idPedido);
+}
 int compararCronologicamente(const Pedido& a, const Pedido& b) noexcept {
-    const auto& x = a.datos();
-    const auto& y = b.datos();
-    if (x.fecha != y.fecha) return x.fecha < y.fecha ? -1 : 1;
-    if (x.hora != y.hora) return x.hora < y.hora ? -1 : 1;
-    if (x.idPedido != y.idPedido) return x.idPedido < y.idPedido ? -1 : 1;
-    return 0;
+    const auto& datos = a.datos();
+    return compararCronologicamente(datos.fecha, datos.hora, datos.idPedido, b);
 }
 bool precedeEnDespacho(const Pedido& a, const Pedido& b) noexcept {
     if (a.datos().nivelPrioridad != b.datos().nivelPrioridad)

@@ -1,5 +1,7 @@
 #include "logistica/MinHeap.hpp"
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 using namespace std;
 
 namespace logistica {
@@ -16,6 +18,9 @@ MinHeap::~MinHeap() {
 }
 
 void MinHeap::redimensionar() {
+    if (capacidad > std::numeric_limits<int>::max() / 2 ||
+        static_cast<std::size_t>(capacidad) > std::numeric_limits<std::size_t>::max() / sizeof(Pedido*) / 2)
+        throw std::length_error("Heap demasiado grande.");
     int nuevaCapacidad = capacidad * 2;
     Pedido** nuevoArr = new Pedido*[nuevaCapacidad];
     for (int i = 0; i < cantidadNodos; i++) {
@@ -41,7 +46,7 @@ void MinHeap::siftUp(int actual) {
 }
 
 void MinHeap::siftDownMin(int i, int n) {
-    while (2 * i + 1 < n) {
+    while (i < n / 2) {
         int menor = 2 * i + 1;
         if (menor + 1 < n && precedeEnDespacho(*arr[menor + 1], *arr[menor])) {
             menor++;

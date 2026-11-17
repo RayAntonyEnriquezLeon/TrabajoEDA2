@@ -55,6 +55,8 @@ bool horaValida(const std::string& hora) noexcept;
 std::string validarNuevoPedido(const DatosPedido& datos);
 
 int compararCronologicamente(const Pedido& a, const Pedido& b) noexcept;
+int compararCronologicamente(const std::string& fecha, const std::string& hora,
+                             const std::string& id, const Pedido& pedido) noexcept;
 
 
 bool precedeEnDespacho(const Pedido& a, const Pedido& b) noexcept;
