@@ -17,7 +17,7 @@ void exigir(bool condicion, const char* mensaje) {
 bool cronologico(const DatosPedido& a, const DatosPedido& b) {
     if (a.fecha != b.fecha) return a.fecha < b.fecha;
     if (a.hora != b.hora) return a.hora < b.hora;
-    return a.idPedido < b.idPedido;
+    return std::stoul(a.idPedido.substr(3)) < std::stoul(b.idPedido.substr(3));
 }
 
 void comprobar(SistemaLogistico& sistema, const std::vector<DatosPedido>& referencia) {
@@ -99,13 +99,23 @@ void probarSistema(const std::string& ruta) {
     exigir(!sistema.consultarRango("2026-07-01", "2026-06-01", invalido).correcto(),
            "Rechazar rango invertido.");
     auto nuevo = referencia.front();
-    nuevo.idPedido = "PD-999998";
+    nuevo.idPedido = "PD-1000000";
+    auto anterior = nuevo;
+    anterior.idPedido = "PD-999999";
+    exigir(sistema.registrarPedido(anterior).correcto(), "Registrar ultimo ID de seis digitos.");
+    referencia.push_back(anterior);
     exigir(sistema.registrarPedido(nuevo).correcto(), "Insercion individual.");
     referencia.push_back(nuevo);
     nuevo.fecha = "2026-07-01";
     exigir(sistema.registrarPedido(nuevo).codigo == CodigoResultado::IdDuplicado,
            "ID repetido con fecha distinta.");
     comprobar(sistema, referencia);
+    exigir(sistema.cancelarPedido(nuevo.idPedido).correcto() &&
+           !sistema.buscarPedido(nuevo.idPedido), "Cancelar ID de siete digitos.");
+    referencia.pop_back();
+    nuevo.fecha = anterior.fecha;
+    exigir(sistema.registrarPedido(nuevo).correcto(), "Reutilizar ID retirado de los tres indices.");
+    referencia.push_back(nuevo);
 
     std::sort(referencia.begin(), referencia.end(), [](const auto& a, const auto& b) {
         return a.nivelPrioridad != b.nivelPrioridad ?

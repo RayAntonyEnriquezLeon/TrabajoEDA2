@@ -97,12 +97,9 @@ Pedido* ArbolAVL::buscar(const std::string& fecha, const std::string& hora,
                         const std::string& idPedido) const noexcept {
     const Nodo* nodo = raiz_;
     while (nodo) {
-        const auto& datos = nodo->pedido->datos();
-        if (fecha == datos.fecha && hora == datos.hora && idPedido == datos.idPedido)
-            return nodo->pedido;
-        const bool menor = fecha != datos.fecha ? fecha < datos.fecha :
-            (hora != datos.hora ? hora < datos.hora : idPedido < datos.idPedido);
-        nodo = menor ? nodo->izquierdo : nodo->derecho;
+        const int orden = compararCronologicamente(fecha, hora, idPedido, *nodo->pedido);
+        if (orden == 0) return nodo->pedido;
+        nodo = orden < 0 ? nodo->izquierdo : nodo->derecho;
     }
     return nullptr;
 }

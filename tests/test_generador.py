@@ -28,7 +28,7 @@ class PruebasGenerador(unittest.TestCase):
         self.assertNotEqual(list(generar_filas(1, 30)), list(generar_filas(2, 30)))
         self.assertEqual(list(generar_filas(0, 30)), list(generar_filas(0, 31))[:30])
         self.assertEqual(len(list(generar_filas((1 << 64) - 1, 30))), 30)
-        for semilla, cantidad in ((-1, 30), (1 << 64, 30), (652, 0), (652, 20001)):
+        for semilla, cantidad in ((-1, 30), (1 << 64, 30), (652, 0), (652, 10000000)):
             with self.assertRaises(ValueError):
                 list(generar_filas(semilla, cantidad))
 
