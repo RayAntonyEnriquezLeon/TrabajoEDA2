@@ -87,14 +87,14 @@ void mostrarTabla(const Pedido* const* pedidos, std::size_t cantidad) {
     }
     std::ostringstream salida;
     salida << std::left << std::setw(12) << "ID" << std::setw(10) << "DNI"
-           << std::setw(10) << "Envio" << std::setw(6) << "Prior."
+           << std::setw(10) << "Envio" << std::setw(8) << "Prior."
            << std::setw(18) << "Monto USD" << std::setw(12) << "Fecha"
            << std::setw(10) << "Hora" << "Estado\n"
            << std::string(92, '-') << '\n';
     for (std::size_t i = 0; i < cantidad; ++i) {
         const auto& d = pedidos[i]->datos();
         salida << std::setw(12) << d.idPedido << std::setw(10) << d.dniCliente
-               << std::setw(10) << texto(d.tipoEnvio) << std::setw(6) << d.nivelPrioridad
+               << std::setw(10) << texto(d.tipoEnvio) << std::setw(8) << d.nivelPrioridad
                << std::setw(18) << montoTexto(d.montoCentavos) << std::setw(12) << d.fecha
                << std::setw(10) << d.hora << estadoVisible(d.estado) << '\n';
     }
